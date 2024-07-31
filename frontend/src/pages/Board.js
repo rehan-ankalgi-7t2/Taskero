@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadTasks, moveTask } from '../features/tasks/tasksSlice';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const Board = () => {
@@ -8,19 +7,19 @@ const Board = () => {
   const tasks = useSelector((state) => state.tasks);
 
   useEffect(() => {
-    dispatch(loadTasks());
+    // dispatch(loadTasks());
   }, [dispatch]);
 
   const onDragEnd = (result) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
-    dispatch(moveTask({ taskId: result.draggableId, newColumn: destination.droppableId }));
+    // if (!result.destination) return;
+    // const { source, destination } = result;
+    // dispatch(moveTask({ taskId: result.draggableId, newColumn: destination.droppableId }));
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        {['todo', 'inProgress', 'done'].map((column) => (
+      <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '24px' }}>
+        {['Todo', 'In Progress', 'Completed '].map((column) => (
           <Droppable droppableId={column} key={column}>
             {(provided) => (
               <div
@@ -28,7 +27,7 @@ const Board = () => {
                 {...provided.droppableProps}
                 style={{ margin: '8px', padding: '8px', width: '300px', backgroundColor: '#f0f0f0' }}
               >
-                <h2>{column}</h2>
+                <h4>{column}</h4>
                 {tasks.filter(task => task.column === column).map((task, index) => (
                   <Draggable draggableId={task.id} index={index} key={task.id}>
                     {(provided) => (
