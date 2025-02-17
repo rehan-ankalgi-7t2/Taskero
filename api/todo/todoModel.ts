@@ -7,6 +7,10 @@ const subtaskSchema = new mongoose.Schema({
     isCompleted: {
         type: Number,
         default: 0
+    },
+    todoId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Todo'
     }
 }, {timestamps: true})
 

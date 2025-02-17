@@ -42,10 +42,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="completed"
+        name="projects"
         options={{
-          title: 'Completed',
-          tabBarIcon: ({ color }) => <MaterialIcons name="checklist" size={24} color={color} />,
+          title: 'Projects',
+          tabBarIcon: ({ color }) => <MaterialIcons name="workspaces" size={24} color={color} />,
         }}
       />
       <Tabs.Screen

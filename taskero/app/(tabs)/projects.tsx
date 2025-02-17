@@ -1,9 +1,9 @@
 import { View, Text } from 'react-native';
 
-export default function CompletedScreen() {
+export default function ProjectScreen() {
     return (
         <View>
-            <Text>Completed Screen</Text>
+            <Text>Projects Screen</Text>
         </View>
     );
 }

@@ -20,7 +20,7 @@ interface ICustomDateSliderProps {
 }
 
 const CustomDateSlider: React.FC<ICustomDateSliderProps> = ({ onSelect, dateLimit }) => {
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
     const dates = generateDates(dateLimit); // Next 7 days
 
     const handleDatePress = (date: string) => {

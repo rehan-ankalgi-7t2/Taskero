@@ -35,6 +35,8 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="signup" options={{headerShown: false}}/>
+          <Stack.Screen name="onboarding/onboarding-start" options={{headerShown: false}}/>
           <Stack.Screen name="login" options={{headerShown: false}}/>
           <Stack.Screen name="create-todo" options={{
             headerShown: true, 
@@ -55,7 +57,6 @@ export default function RootLayout() {
               headerTintColor: "white",
             }}
           />
-          <Stack.Screen name="signup" options={{headerShown: false}}/>
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

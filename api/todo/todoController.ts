@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Todo } from "./todoModel";
+import { Subtask, Todo } from "./todoModel";
 import handleResponse, { ResponseObject } from "../utils/handleResponse";
 import { aggregateWithPagination } from "../utils/paginationHelper";
 import mongoose from "mongoose";
@@ -7,11 +7,29 @@ import mongoose from "mongoose";
 const createTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const todoBody = req.body;
+        let newTodoObj = new Todo({
+            title: todoBody.title,
+        })
 
-        const newTodo = await Todo.create(todoBody);
+        if(todoBody.description) newTodoObj.description = todoBody.description;
+        if(todoBody.deadline) newTodoObj.deadline = todoBody.deadline;
 
-        if(newTodo){
-            res.status(201).json(handleResponse(newTodo, true, 201));
+        const createdTodo = await newTodoObj.save();
+
+        if(createdTodo){
+            if(todoBody.subtasks){
+                const subtasksBody = todoBody.subtasks.map((subtask: string) => ({
+                    subtaskTitle: subtask,
+                    todoId: createdTodo._id
+                }))
+
+                const createdSubTasks = await Subtask.insertMany(subtasksBody);
+
+                if (!createdSubTasks){
+                    res.status(409).json(handleResponse(null, false, 409, 'something went wrong while inserting subtasks'));
+                }
+            }
+            res.status(201).json(handleResponse(createdTodo, true, 201));
         } else {
             res.status(409).json(handleResponse(null, false, 409, 'something went wrong while creating todo'));
         }

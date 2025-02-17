@@ -14,9 +14,10 @@ const CustomVerticleTimeline = () => {
         { id: "7", title: "Pray Asr", time: "5:00 PM", description: "", color: "#E0E0E0" },
         { id: "8", title: "Pray Maghrib", time: "5:00 PM", description: "", color: "#E0E0E0" },
         { id: "9", title: "Pray Isha", time: "5:00 PM", description: "", color: "#E0E0E0" },
+        { id: "10", title: "Sleep Time 🌛", time: "10:00 PM", description: "", color: "#E0E0E0" },
     ];
   return (
-    <View>
+    <View style={{borderTopColor: '#ccc', borderTopWidth: 1}}>
         <ScrollView contentContainerStyle={styles.timeline}>
             {tasks.map((task, index) => (
                 <View key={task.id} style={styles.timelineItem}>
@@ -26,9 +27,13 @@ const CustomVerticleTimeline = () => {
                     ]} >
                     </View>
                     <View style={[styles.taskCard, task.highlighted && {backgroundColor: Colors.light.tint}]}>
-                        <Text style={[styles.taskTitle, task.highlighted && {color: 'white'}]}>{task.title}</Text>
-                        <Text style={[styles.taskTime, task.highlighted && { color: 'white' }]}>{task.time}</Text>
-                        <Text style={[styles.taskDesc, task.highlighted && { color: 'white' }]}>{task.description}</Text>
+                        <View style={{display: 'flex', alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Text style={[styles.taskTitle, task.highlighted && {color: 'white'}]}>{task.title}</Text>
+                            <Text style={[styles.taskTime, task.highlighted && { color: 'white' }]}>{task.time}</Text>
+                        </View>
+                        {task.description &&
+                            <Text style={[styles.taskDesc, task.highlighted && { color: 'white' }]}>{task.description}</Text>
+                        }
                         {task.highlighted &&
                             <TouchableHighlight
                                 onPress={() => {}}
@@ -38,7 +43,8 @@ const CustomVerticleTimeline = () => {
                                     paddingVertical: 8,
                                     borderRadius: 8,
                                     marginLeft: 'auto',
-                                    backgroundColor: 'white'
+                                    backgroundColor: 'white',
+                                    marginTop: 16
                                 }}>
                                 <View style={{ display: 'flex', alignItems: 'center', gap: 4, flexDirection: 'row' }}>
                                     <Text style={{fontWeight: 'medium'}}>join meeting</Text>
@@ -92,13 +98,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "#333",
+        flex: 1
     },
     taskTime: {
         fontSize: 14,
         color: "#666",
+        fontWeight: 'bold'
     },
     taskDesc: {
-        fontSize: 12,
+        fontSize: 14,
         color: "#888",
     },
     fab: {

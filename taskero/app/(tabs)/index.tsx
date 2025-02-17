@@ -65,19 +65,16 @@ export default function HomeScreen() {
           <Image source={require('@/assets/images/pfp.png')} style={{height: 40, width: 40, borderRadius: 40}} />
           <View>
             <Text style={{
-              fontSize: 24,
+              fontSize: 32,
               fontWeight: 'bold',
-            }}>Hi Rehan 👋</Text>
+            }}>Hi Rehan</Text>
             <Text style={{opacity: 0.5}}>
               Your daily adventure starts now
             </Text>
         </View>
-        {/* <Pressable style={{borderRadius: 8, padding: 12, backgroundColor: '#dedede'}}>
-          <MaterialIcons name="apps" size={24} color="black" />
-        </Pressable> */}
         </View>
         <FlatList
-        style={{paddingBlock: 16}}
+        style={{marginVertical: 16}}
           data={statusData}
           keyExtractor={(item) => item.id}
           numColumns={2} // Set 2 columns
@@ -89,7 +86,8 @@ export default function HomeScreen() {
               backgroundColor: item.color,
               flexDirection: 'row',
               alignItems: 'center',
-              margin: 8, // Adds spacing between items
+              margin: 6, // Adds spacing between items
+              // boxShadow: `0px 8px 24px ${item.color}cc`
             }}>
               <MaterialIcons name={item.icon as keyof typeof MaterialIcons.glyphMap} size={24} color="white" style={{ padding: 8, backgroundColor: '#0002', borderRadius: 40 }} />
               <View style={{ marginLeft: 8 }}>
@@ -122,7 +120,7 @@ export default function HomeScreen() {
         </View>
 
     {data && (
-      <ScrollView style={{ height: 440}}>
+      <ScrollView style={{ height: 'auto', paddingBottom: 24}}>
         {Array.isArray(data?.data) && data?.data?.map(item => (
           <Pressable key={item._id} onPress={() => router.push({ pathname: "/todo/[id]", params: { id: item._id } })}>
             <View 
@@ -184,11 +182,11 @@ export default function HomeScreen() {
           backgroundColor: Colors.light.tint,
           justifyContent: "center",
           alignItems: "center",
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 4 },
+          shadowColor: Colors.light.tint,
+          shadowOffset: { width: 0, height: 8 },
           shadowOpacity: 0.3,
-          shadowRadius: 4,
-          elevation: 5,
+          shadowRadius: 0,
+          elevation: 10,
       }} 
       onPress={() => router.push('/create-todo')}>
         <Ionicons name="add" size={30} color="white" />
