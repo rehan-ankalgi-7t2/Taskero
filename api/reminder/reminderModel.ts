@@ -1,22 +1,11 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-// Define Reminder Interface
-export interface IReminder extends Document {
-    user: mongoose.Schema.Types.ObjectId;
-    title: string;
-    description?: string;
-    dateTime: Date;
-    repeat: "none" | "daily" | "weekly" | "monthly" | "yearly";
-    status: "pending" | "completed" | "missed";
-    notificationSent: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+import mongoose, { Schema } from "mongoose";
 
 // Define Reminder Schema
-const ReminderSchema: Schema = new Schema(
+const reminderSchema = new Schema(
     {
-        user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        user: { type: Schema.Types.ObjectId, ref: "User", 
+            // required: true 
+        },
         title: { type: String, required: true, trim: true },
         description: { type: String, trim: true },
         dateTime: { type: Date, required: true },
@@ -27,4 +16,4 @@ const ReminderSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-export default mongoose.model<IReminder>("Reminder", ReminderSchema);
+export const Reminder = mongoose.model("Reminder", reminderSchema);

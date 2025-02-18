@@ -6,7 +6,19 @@ import mongoose from "mongoose";
 
 const createSubtask = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        
+        const subtaskBody = req.body;
+
+        if(!mongoose.Types.ObjectId.isValid(subtaskBody.todoId.toString())){
+            res.status(400).send(handleResponse('', false, 400, 'Invalid Todo Id'));
+        }
+
+        const createdSubtask = await Subtask.create(subtaskBody);
+
+        if (createdSubtask) {
+            res.status(200).send(handleResponse(createdSubtask, true, 200));
+        } else {
+            res.status(409).send(handleResponse('', false, 409, 'Something went wrong while creating subtask'));
+        }
     } catch (error) {
         process.env.NODE_ENV === 'development' && console.log(error);
         res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
@@ -15,27 +27,16 @@ const createSubtask = async (req: Request, res: Response, next: NextFunction): P
 
 const getAllSubtasksByTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const page = parseInt(req.query.page as string);
-        const pageSize = parseInt(req.query.pageSize as string);
-        const searchQuery = req.query.search;
-        const { title } = req.query;
-        const regexPattern = new RegExp(searchQuery as string, 'i');
-        const query =
-            searchQuery && searchQuery.length !== 0
-                ? {
-                    $or: [{ title: regexPattern }]
-                }
-                : {};
+        const todoId = req.params.id;
 
-        const pipeline = [
-            {
-                $match: query
-            }
-        ]
-        const data = await aggregateWithPagination(Subtask, pipeline, page, pageSize);
+        if(!mongoose.Types.ObjectId.isValid(todoId.toString())){
+            res.status(400).send(handleResponse('', false, 400, 'Invalid Todo Id'));
+        }
+        
+        const data = await Subtask.find({todoId});
 
-        if (data && data.data.length > 0) {
-            res.status(200).send(handleResponse(data.data, true, 200, null, null, data.totalDocuments, data.totalPages, pageSize));
+        if (data) {
+            res.status(200).send(handleResponse(data, true, 200));
         } else {
             res.status(404).send(handleResponse('', false, 500, 'Subtasks not found'));
         }
@@ -68,13 +69,11 @@ const updateSubtask = async (req: Request, res: Response) => {
 
 const deleteSubtask = async (req: Request, res: Response) => {
     try {
-        const SubtaskUpdateBody = req.body;
-
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             res.status(400).json(handleResponse(null, false, 400, 'invalid Subtask id'));
         }
 
-        await Subtask.findByIdAndDelete(req.params.id, SubtaskUpdateBody);
+        await Subtask.findByIdAndDelete(req.params.id);
 
         const deletedSubtask = await Subtask.findById(req.params.id);
 

@@ -1,28 +1,34 @@
 import { Request, Response } from "express";
-import Reminder from "./reminderModel";
+import {Reminder} from "./reminderModel";
+import handleResponse from "../utils/handleResponse";
 
-// 📌 1️⃣ Create a Reminder
 export const createReminder = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { title, description, dateTime, repeat } = req.body;
-        const userId = (req as any).user._id; // Assuming authentication middleware sets `req.user`
+        const reminderBody = req.body;
+        // const userId = (req as any).user._id; // Assuming authentication middleware sets `req.user`
 
         const reminder = new Reminder({
-            user: userId,
-            title,
-            description,
-            dateTime,
-            repeat,
+            title: reminderBody.title,
+            description: reminderBody.description,
+            dateTime: reminderBody.description,
         });
 
-        await reminder.save();
-        res.status(201).json({ message: "Reminder created successfully", reminder });
+        if(reminderBody.repeat){
+            reminder.repeat = reminderBody.repeat
+        }
+
+        const createdReminder = await reminder.save();
+
+        if (createdReminder) {
+            res.status(200).send(handleResponse(createdReminder, true, 200));
+        } else {
+            res.status(409).send(handleResponse('', false, 409, 'Something went wrong while creating reminder'));
+        }
     } catch (error) {
         res.status(500).json({ error: "Failed to create reminder" });
     }
 };
 
-// 📌 2️⃣ Get All Reminders for a User
 export const getUserReminders = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = (req as any).user._id;
@@ -34,7 +40,6 @@ export const getUserReminders = async (req: Request, res: Response): Promise<voi
     }
 };
 
-// 📌 3️⃣ Get a Single Reminder by ID
 export const getReminderById = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
@@ -51,7 +56,6 @@ export const getReminderById = async (req: Request, res: Response): Promise<void
     }
 };
 
-// 📌 4️⃣ Update a Reminder
 export const updateReminder = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
@@ -70,7 +74,6 @@ export const updateReminder = async (req: Request, res: Response): Promise<void>
     }
 };
 
-// 📌 5️⃣ Delete a Reminder
 export const deleteReminder = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;

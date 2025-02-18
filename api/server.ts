@@ -3,6 +3,9 @@ import cors from 'cors';
 import dotenv from "dotenv";
 import authRoutes from './auth/authRoutes';
 import todoRoutes from './todo/todoRoutes';
+import subtaskRouter from './subtask/subtaskRoutes';
+import reminderRouter from './reminder/reminderRoutes';
+import projectRouter from './project/projectRoutes';
 import connectDB from "./db/db";
 import mongoose from "mongoose";
 
@@ -55,6 +58,9 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use('/api/users', authRoutes)
 app.use('/api/todos', todoRoutes)
+app.use('/api/subtasks', subtaskRouter)
+app.use('/api/reminders', reminderRouter)
+app.use('/api/projects', projectRouter)
 
 // Start Server
 app.listen(PORT, () => {
