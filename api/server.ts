@@ -5,7 +5,7 @@ import authRoutes from './auth/authRoutes';
 import todoRoutes from './todo/todoRoutes';
 import subtaskRouter from './subtask/subtaskRoutes';
 import reminderRouter from './reminder/reminderRoutes';
-import projectRouter from './project/projectRoutes';
+import projectRouter from './project/project.routes';
 import connectDB from "./db/db";
 import mongoose from "mongoose";
 

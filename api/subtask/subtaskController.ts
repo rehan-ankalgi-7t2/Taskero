@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Subtask } from "../todo/todoModel";
 import handleResponse, { ResponseObject } from "../utils/handleResponse";
-import { aggregateWithPagination } from "../utils/paginationHelper";
 import mongoose from "mongoose";
 
 const createSubtask = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -20,8 +19,8 @@ const createSubtask = async (req: Request, res: Response, next: NextFunction): P
             res.status(409).send(handleResponse('', false, 409, 'Something went wrong while creating subtask'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`SUBTASK :: createSubtask :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
@@ -41,8 +40,8 @@ const getAllSubtasksByTodo = async (req: Request, res: Response, next: NextFunct
             res.status(404).send(handleResponse('', false, 500, 'Subtasks not found'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`SUBTASK :: getAllSubtasksByTodo :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
@@ -62,8 +61,8 @@ const updateSubtask = async (req: Request, res: Response) => {
             res.status(409).json(handleResponse(null, false, 409, 'something went wrong while updating Subtask'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`SUBTASK :: updateSubtask :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
@@ -83,8 +82,8 @@ const deleteSubtask = async (req: Request, res: Response) => {
             res.status(201).json(handleResponse('Subtask deleted successfully', true, 200));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`SUBTASK :: deleteSubtask :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 

@@ -34,8 +34,8 @@ const createTodo = async (req: Request, res: Response, next: NextFunction): Prom
             res.status(409).json(handleResponse(null, false, 409, 'something went wrong while creating todo'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`TODO :: createTodo :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
@@ -66,15 +66,15 @@ const getAllTodo = async (req: Request, res: Response, next: NextFunction): Prom
             res.status(404).send(handleResponse('', false, 500, 'todos not found'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`TODO :: getAllTodo :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
 const getTodoDetails = async (req: Request, res: Response) => {
     try {
         const todoId = req.params.id;
-        process.env.NODE_ENV === 'development' && console.log(JSON.stringify(req.params.id))
+        // process.env.NODE_ENV === 'development' && console.log(JSON.stringify(req.params.id))
         if(!mongoose.Types.ObjectId.isValid(todoId)){
             res.status(400).json(handleResponse(null, false, 400, 'invalid todo id'));
         }
@@ -87,7 +87,8 @@ const getTodoDetails = async (req: Request, res: Response) => {
             res.status(404).send(handleResponse('', false, 500, 'todos not found'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
+        process.env.NODE_ENV === 'development' && console.log(`TODO :: getTodoDetails :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
@@ -107,8 +108,8 @@ const updateTodo = async (req: Request, res: Response) => {
             res.status(409).json(handleResponse(null, false, 409, 'something went wrong while updating todo'));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`TODO :: updateTodo :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 
@@ -130,8 +131,8 @@ const deleteTodo = async (req: Request, res: Response) => {
             res.status(201).json(handleResponse('todo deleted successfully', true, 200));
         }
     } catch (error) {
-        process.env.NODE_ENV === 'development' && console.log(error);
-        res.status(500).json(handleResponse(null, false, 500, 'something went wrong'));
+        process.env.NODE_ENV === 'development' && console.log(`TODO :: deleteTodo :: ${error}`);
+        res.status(500).send(handleResponse('', false, 500, 'Something went wrong'));
     }
 }
 

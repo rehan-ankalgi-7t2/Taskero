@@ -38,6 +38,7 @@ export default function RootLayout() {
           <Stack.Screen name="signup" options={{headerShown: false}}/>
           <Stack.Screen name="onboarding/onboarding-start" options={{headerShown: false}}/>
           <Stack.Screen name="login" options={{headerShown: false}}/>
+          <Stack.Screen name="notification" options={{headerShown: false}}/>
           <Stack.Screen name="create-todo" options={{
             headerShown: true, 
             headerStyle: {

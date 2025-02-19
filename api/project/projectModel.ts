@@ -35,6 +35,10 @@ const ActivitySchema = new Schema(
 
 const ProjectSchema = new Schema(
     {
+        tintColor: {
+            type: String,
+            default: '#ffffff'
+        },
         title: {
             type: String,
             required: [true, "Project title is required"],
