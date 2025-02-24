@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from 'cors';
 import dotenv from "dotenv";
 import authRoutes from './auth/authRoutes';
@@ -6,7 +6,6 @@ import todoRoutes from './todo/todoRoutes';
 import subtaskRouter from './subtask/subtaskRoutes';
 import reminderRouter from './reminder/reminderRoutes';
 import projectRouter from './project/project.routes';
-import connectDB from "./db/db";
 import mongoose from "mongoose";
 
 dotenv.config(); // Load environment variables

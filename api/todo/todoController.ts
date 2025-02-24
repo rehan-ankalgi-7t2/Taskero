@@ -18,8 +18,8 @@ const createTodo = async (req: Request, res: Response, next: NextFunction): Prom
 
         if(createdTodo){
             if(todoBody.subtasks){
-                const subtasksBody = todoBody.subtasks.map((subtask: string) => ({
-                    subtaskTitle: subtask,
+                const subtasksBody = todoBody.subtasks.map((subtask: {subtaskTitle: string}) => ({
+                    subtaskTitle: subtask?.subtaskTitle,
                     todoId: createdTodo._id
                 }))
 
