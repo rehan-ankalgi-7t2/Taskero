@@ -1,3 +1,4 @@
+import { TCreateTodoForm } from '@/app/create-todo';
 import { TODO_URL } from '../constants/apiconstants';
 import { apiSlice } from './apiClient';
 
@@ -52,8 +53,15 @@ export const todoApis = apiSlice.injectEndpoints({
                     method: "GET",
                 };
             },
-        })
+        }),
+        createTodo: builder.mutation<TTodoapiResponse, TCreateTodoForm>({
+            query: ({ ...data }) => ({
+                url: `${TODO_URL}/`,
+                method: 'POST',
+                body: data
+            })
+        }),
     })
 })
 
-export const { useGetAllTodoQuery, useGetTodoDetailsQuery } = todoApis;
+export const { useGetAllTodoQuery, useGetTodoDetailsQuery, useCreateTodoMutation } = todoApis;

@@ -1,20 +1,21 @@
-import { View, Text, TouchableOpacity, StyleSheet, Button, Pressable } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Button, Pressable, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
-import { Controller, useForm } from 'react-hook-form'
-import { useNavigation } from 'expo-router'
+import { Controller, Form, useForm } from 'react-hook-form'
+import { router, useNavigation } from 'expo-router'
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Colors } from '@/constants/Colors'
 import CustomDateInput from '@/components/ui/CustomDateInput'
 import { ThemedText } from '@/components/ThemedText'
 import { MaterialIcons } from '@expo/vector-icons'
+import { useCreateTodoMutation } from '@/services/todosApi'
 
-type TCreateTodoForm = {
+export type TCreateTodoForm = {
   title: string,
   description: string,
-  deadline?: Date,
-  subtasks?: [],
+  deadline?: Date | null,
+  subtasks?: { subtaskTitle: string }[],
 }
 
 const schema = yup.object().shape({
@@ -33,23 +34,43 @@ const schema = yup.object().shape({
 
 const createTodo = () => {
   const [subtaskText, setSubtaskText] = useState("");
-  const [subtasks, setSubtasks] = useState<string[]>([]);
+  const [subtasks, setSubtasks] = useState<{ subtaskTitle: string }[]>([]);
   const [date, setDate] = useState<Date | null>(null);
   const navigation = useNavigation();
-      const { control, handleSubmit, formState: { errors } } = useForm<TCreateTodoForm>({
-          resolver: yupResolver(schema),
-      });
+  const { control, handleSubmit, formState: { errors } } = useForm<TCreateTodoForm>({
+      resolver: yupResolver(schema),
+  });
+  const [createTodo, { isLoading, error, isSuccess }] = useCreateTodoMutation();
 
-      const onSubmit = async (data: TCreateTodoForm) => {
-        console.log(data)
-      }
+  const onSubmit = async (data: TCreateTodoForm) => {
+    // console.log(data)
+    // Alert.alert('Form Data', JSON.stringify({ ...data, deadline: date }, null, 2));
+    try {
+      const response = await createTodo(data).unwrap(); // `unwrap()` ensures errors are caught in the catch block
+      Alert.alert('Success', 'Todo created successfully!');
+      // console.log(response); // Handle success response
+      router.push("/(tabs)")
+    } catch (err) {
+      Alert.alert('Error', err?.data?.message || 'Something went wrong');
+      console.error('Create Todo Error:', err);
+    }
+  }
 
   return (
     <GestureHandlerRootView style={{
       padding: 16
     }}>
+      <ScrollView>
+
       <Text style={{fontSize: 24, fontWeight: 'bold'}}>Add New Todo</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        // style={styles.container}
+        keyboardVerticalOffset={40}
+      >
       <View style={{ marginTop: 24 }}>
+
+        
         {/* Email Input */}
         <ThemedText>title</ThemedText>
         <Controller
@@ -103,39 +124,41 @@ const createTodo = () => {
         {/* assign todo to the user */}
 
         {/* sub tasks */}
-        <ThemedText>Subtasks</ThemedText>
-          <Controller
-            control={control}
-            name="subtasks"
-            render={({ field: { onChange, value } }) => (
-              <View style={{display: 'flex', alignItems: 'flex-start', gap: 8, flexDirection: 'row', marginBottom: 16}}>
-                <TextInput
-                  placeholder="Add Subtasks"
-                  keyboardType="default"
-                  autoCapitalize="none"
-                  value={subtaskText}
-                  onChangeText={setSubtaskText}
-                  style={[styles.input, errors.title && styles.inputError, { flex: 1, marginBottom: 12 }]}
-                />
-                <Pressable
-                  style={{ paddingVertical: 9, paddingHorizontal: 16, backgroundColor: Colors.light.tint, borderRadius: 8 }}
-                  onPress={() => {
-                    if (subtaskText.trim().length > 0) {
-                      const updatedSubtasks = [...subtasks, subtaskText.trim()];
-                      setSubtasks(updatedSubtasks);  // Update local state
-                      onChange(updatedSubtasks);  // Update react-hook-form field
-                      setSubtaskText("");  // Clear input field
-                    }
-                  }}
-                >
-                  <MaterialIcons name="check" size={24} color="white" />
-                </Pressable>
-            </View>
-            )}
-          />
+        
+          <ThemedText>Subtasks</ThemedText>
+            <Controller
+              control={control}
+              name="subtasks"
+              render={({ field: { onChange, value } }) => (
+                <View style={{display: 'flex', alignItems: 'flex-start', gap: 8, flexDirection: 'row', marginBottom: 16}}>
+                  <TextInput
+                    placeholder="Add Subtasks"
+                    keyboardType="default"
+                    autoCapitalize="none"
+                    value={subtaskText}
+                    onChangeText={setSubtaskText}
+                    style={[styles.input, errors.title && styles.inputError, { flex: 1, marginBottom: 12 }]}
+                  />
+                  <Pressable
+                    style={{ paddingVertical: 9, paddingHorizontal: 16, backgroundColor: Colors.light.tint, borderRadius: 8 }}
+                    onPress={() => {
+                      if (subtaskText.trim().length > 0) {
+                        const updatedSubtasks = [...subtasks, { subtaskTitle: subtaskText.trim() }];
+                        setSubtasks(updatedSubtasks);  // Update local state
+                        onChange(updatedSubtasks);  // Update react-hook-form field
+                        setSubtaskText("");  // Clear input field
+                      }
+                    }}
+                  >
+                    <MaterialIcons name="check" size={24} color="white" />
+                  </Pressable>
+              </View>
+              )}
+            />
+        
         {subtasks && subtasks.map((subtask, index) => (
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',  borderBottomWidth: 1, borderBottomColor: '#0002'}}>
-            <Text key={index}>✔️ {subtask}</Text>
+          <View key={index} style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',  borderBottomWidth: 1, borderBottomColor: '#0002'}}>
+            <Text>✔️ {subtask.subtaskTitle}</Text>
             <MaterialIcons name="delete-outline" size={24} color="red" style={{ padding: 8 }} onPress={() => {
               const updatedSubtasks = subtasks.filter((_, i) => i !== index);
               setSubtasks(updatedSubtasks);
@@ -148,6 +171,9 @@ const createTodo = () => {
         <TouchableOpacity style={[styles.button, {marginTop: 24}]} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>Create Task</Text>
         </TouchableOpacity>
+      </KeyboardAvoidingView>
+
+      </ScrollView>
     </GestureHandlerRootView>
   )
 }
