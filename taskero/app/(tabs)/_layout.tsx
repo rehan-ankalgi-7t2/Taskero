@@ -42,7 +42,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="projects"
+        name="project"
         options={{
           title: 'Projects',
           tabBarIcon: ({ color }) => <MaterialIcons name="workspaces" size={24} color={color} />,

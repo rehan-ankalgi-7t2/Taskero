@@ -279,7 +279,7 @@ export default function HomeScreen() {
           alignItems: 'center',
           justifyContent: 'space-between',
           marginBottom: 16,
-          paddingHorizontal: 16
+          paddingHorizontal: 16,
         }}>
           <Text style={{fontSize: 24, fontWeight: 'bold'}}>Recent Tasks</Text>
         <TouchableHighlight 
@@ -297,7 +297,7 @@ export default function HomeScreen() {
         </View>
 
     {data && (
-      <ScrollView style={{ height: 196, paddingBottom: 24, paddingHorizontal: 16}}>
+      <ScrollView style={{ height: 400, paddingBottom: 24, paddingHorizontal: 16}}>
         {Array.isArray(data?.data) && data?.data?.map(item => (
           <Pressable key={item._id} onPress={() => router.push({ pathname: "/todo/[id]", params: { id: item._id } })}>
             <View 
