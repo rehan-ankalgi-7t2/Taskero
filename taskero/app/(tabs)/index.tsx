@@ -26,28 +26,28 @@ export default function HomeScreen() {
       id: '1',
       title: 'Ongoing',
       count: 24,
-      color: todoStatusColors.drop,
+      color: Colors.light.tint,
       icon: 'repeat'
     },
     {
       id: '2',
       title: 'Completed',
       count: 24,
-      color: todoStatusColors.drop,
+      color: Colors.light.tint,
       icon: 'check-circle-outline'
     },
     {
       id: '3',
       title: 'Overdue',
       count: 24,
-      color: todoStatusColors.drop,
+      color: Colors.light.tint,
       icon: 'access-time'
     },
     {
       id: '4',
       title: 'Upcoming',
       count: Array.isArray(data?.data) ? data?.data?.filter(task => task.status === "todo").length : 0,
-      color: todoStatusColors.drop,
+      color: Colors.light.tint,
       icon: 'navigate-next'
     }
   ]
@@ -178,7 +178,7 @@ export default function HomeScreen() {
           </TouchableHighlight>
           <View>
             <Text style={{
-              fontSize: 24,
+              fontSize: 32,
               fontWeight: 'bold',
             }}>Hi Rehan</Text>
             <Text style={{opacity: 0.5}}>

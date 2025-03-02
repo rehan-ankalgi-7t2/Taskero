@@ -1,0 +1,21 @@
+# Use Node.js image
+FROM node:18
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY api/package*.json ./api/
+RUN cd api && npm install
+
+# Copy source code
+COPY api/ ./api/
+
+# Build TypeScript code
+RUN cd api && npm run build
+
+# Expose port
+EXPOSE 5000
+
+# Start the application
+CMD ["node", "api/dist/index.js"]

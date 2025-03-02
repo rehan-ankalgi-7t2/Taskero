@@ -6,7 +6,6 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Colors } from '@/constants/Colors';
-import { account } from '@/database/appwrite';
 import { ID } from 'react-native-appwrite';
 
 // Define the type for form data
@@ -31,15 +30,7 @@ const SignUpScreen: React.FC = () => {
     const [secureText, setSecureText] = useState<boolean>(true);
 
     const onSubmit: SubmitHandler<TSignUpForm> = async (data: TSignUpForm) => {
-        const promise = account.create(ID.unique(), data.email, data.password, data.name);
-
-        promise.then(function (response) {
-            Alert.alert('SUCCESS', `${response.email}`);
-            console.log(response)
-            router.push('/login');
-        }, function (error) {
-            console.log(error); // Failure
-        });
+        console.log(data)
     };
 
     useEffect(() => {

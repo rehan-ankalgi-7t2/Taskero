@@ -40,11 +40,7 @@ export default function RootLayout() {
           <Stack.Screen name="login" options={{headerShown: false}}/>
           <Stack.Screen name="notification" options={{headerShown: false}}/>
           <Stack.Screen name="create-todo" options={{
-            headerShown: true, 
-            headerStyle: {
-              backgroundColor: Colors.light.tint,
-            },
-            headerTintColor: "white"
+            headerShown: false, 
           }}/>
           {/* Dynamic Route (No need to explicitly define [id]) */}
           <Stack.Screen

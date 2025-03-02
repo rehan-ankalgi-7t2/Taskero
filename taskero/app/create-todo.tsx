@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Button, Pressable, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Button, Pressable, KeyboardAvoidingView, Platform, ScrollView, Alert, TouchableHighlight } from 'react-native'
 import React, { useState } from 'react'
 import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
 import { Controller, Form, useForm } from 'react-hook-form'
@@ -10,6 +10,7 @@ import CustomDateInput from '@/components/ui/CustomDateInput'
 import { ThemedText } from '@/components/ThemedText'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useCreateTodoMutation } from '@/services/todosApi'
+import BackButton from '@/components/ui/BackButton'
 
 export type TCreateTodoForm = {
   title: string,
@@ -58,11 +59,13 @@ const createTodo = () => {
 
   return (
     <GestureHandlerRootView style={{
-      padding: 16
+      paddingHorizontal: 16,
+      paddingTop: 48
     }}>
       <ScrollView>
 
-      <Text style={{fontSize: 24, fontWeight: 'bold'}}>Add New Todo</Text>
+      <BackButton/>
+      <Text style={{fontSize: 32, fontWeight: 'bold'}}>Create {'\n'}new task</Text>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         // style={styles.container}

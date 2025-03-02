@@ -6,8 +6,6 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Colors } from '@/constants/Colors';
-import { account } from '@/database/appwrite';
-
 // Define the type for form data
 type TLoginFormData = {
     email: string;
@@ -28,15 +26,7 @@ const LoginScreen: React.FC = () => {
     const [secureText, setSecureText] = useState<boolean>(true);
 
     const onSubmit: SubmitHandler<TLoginFormData> = (data: TLoginFormData) => {
-        const promise = account.createEmailPasswordSession(data.email, data.password);
-
-        promise.then(function (response) {
-            Alert.alert('SUCCESS', `${response}`);
-            console.log(response)
-            router.push('/');
-        }, function (error) {
-            console.log(error); // Failure
-        });
+        console.log(data)
     };
 
     useEffect(() => {
