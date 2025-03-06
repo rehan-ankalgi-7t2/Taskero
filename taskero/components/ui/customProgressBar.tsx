@@ -6,6 +6,7 @@ interface ProgressBarProps {
     height?: number;
     color?: string;
     backgroundColor?: string;
+    textColor?: string;
 }
 
 const CustomProgressBar: React.FC<ProgressBarProps> = ({
@@ -13,6 +14,7 @@ const CustomProgressBar: React.FC<ProgressBarProps> = ({
     height = 4,
     color = "#3498db",
     backgroundColor = "#e0e0e0",
+    textColor = "#000"
 }) => {
     const animatedValue = useRef(new Animated.Value(0)).current;
 
@@ -31,7 +33,7 @@ const CustomProgressBar: React.FC<ProgressBarProps> = ({
 
     return (
         <View style={[styles.container, { height, backgroundColor }]}>
-            <Animated.View style={[styles.progress, { width: widthInterpolated, backgroundColor: color }]} />
+            <Animated.View style={[styles.progress, { width: widthInterpolated, backgroundColor: color}]} />
         </View>
     );
 };
